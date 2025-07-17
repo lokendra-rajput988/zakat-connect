@@ -13,16 +13,17 @@ import com.mindprove.zakat.exceptions.NotFoundException;
 import com.mindprove.zakat.mapper.PersonDetailMapper;
 import com.mindprove.zakat.repositories.PersonDetailRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PersonDetailServiceImpl implements PersonDetailService {
 
-	@Autowired
-	private PersonDetailRepository personDetailRepository;
-	@Autowired
-	private PersonDetailMapper personDetailMapper;
+
+	private final PersonDetailRepository personDetailRepository;
+	private final PersonDetailMapper personDetailMapper;
 
 	@Override
 	public PersonDetailDto createPerson(PersonDetailDto personDetailDto) {

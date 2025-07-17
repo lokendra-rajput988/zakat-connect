@@ -1,6 +1,9 @@
 package com.mindprove.zakat.dtos;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +23,5 @@ public class PersonDetailDto {
 	private boolean isActive;
 	private Date createdAt;
 	private Date updatedAt;
+	private List<Long> addressId = new ArrayList<>();
 }

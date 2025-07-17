@@ -16,17 +16,17 @@ import com.mindprove.zakat.dtos.PersonDetailDto;
 import com.mindprove.zakat.response.ResponseDTO;
 import com.mindprove.zakat.services.PersonDetailService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/person-detail/")
 @Slf4j
+@RequiredArgsConstructor
 public class PersonDetailController {
 
 	//http://localhost:9090/api/person-detail/
-	
-	@Autowired
-	private PersonDetailService personDetailService;
+	private final PersonDetailService personDetailService;
 	
 	@PostMapping("createPerson")
 	public ResponseEntity<ResponseDTO> createPerson(@RequestBody PersonDetailDto personDetailDto){
