@@ -3,6 +3,7 @@ package com.mindprove.zakat.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mindprove.zakat.dtos.PersonDetailDto;
@@ -16,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class PersonDetailServiceImpl implements PersonDetailService {
 
+	@Autowired
 	private PersonDetailRepository personDetailRepository;
+	@Autowired
 	private PersonDetailMapper personDetailMapper;
 
 	@Override
@@ -39,21 +41,22 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 	@Override
 	public PersonDetailDto getPersonById(long id) {
 		log.info("getPersonById method called");
-		PersonDetail personDetail=personDetailRepository.findById(id).orElseThrow(()-> new NotFoundException("person id "+id+" is not found", 404));
+		PersonDetail personDetail = personDetailRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
 		log.info("getPersonById method completed");
 		return personDetailMapper.toDTO(personDetail);
 	}
 
 	@Override
 	public PersonDetailDto updatePersonById(long id, PersonDetailDto personDetailDto) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean deletePersonById(long id) {
 		log.info("deletePersonById method called");
-		PersonDetail personDetail=personDetailRepository.findById(id).orElseThrow(()-> new NotFoundException("person id "+id+" is not found", 404));
+		PersonDetail personDetail = personDetailRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
 		personDetailRepository.delete(personDetail);
 		log.info("deletePersonById method completed");
 		return true;
@@ -62,7 +65,8 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 	@Override
 	public List<PersonDetailDto> getAllPerson() {
 		log.info("getAllPerson method called");
-		List<PersonDetailDto> personList=personDetailRepository.findAll().stream().map(personDetailMapper::toDTO).toList();
+		List<PersonDetailDto> personList = personDetailRepository.findAll().stream().map(personDetailMapper::toDTO)
+				.toList();
 		log.info("getAllPerson method completed");
 		return personList;
 	}

@@ -1,5 +1,6 @@
 package com.mindprove.zakat.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ public class PersonDetailController {
 
 	//http://localhost:9090/api/person-detail/
 	
+	@Autowired
 	private PersonDetailService personDetailService;
 	
 	@PostMapping("createPerson")
@@ -50,7 +52,7 @@ public class PersonDetailController {
 		return ResponseEntity.ok().body(new ResponseDTO("Success", personDetailService.updatePersonById(id, personDetailDto), HttpStatus.OK));
 	}
 	
-	@DeleteMapping("deletePersonById")
+	@DeleteMapping("deletePersonById/{id}")
 	public ResponseEntity<ResponseDTO> deletePersonById(@PathVariable long id){
 		log.info("Delete API method called");
 		return ResponseEntity.ok().body(new ResponseDTO("Success", personDetailService.deletePersonById(id) , HttpStatus.OK));
