@@ -13,7 +13,6 @@ import com.mindprove.zakat.exceptions.NotFoundException;
 import com.mindprove.zakat.mapper.PersonDetailMapper;
 import com.mindprove.zakat.repositories.PersonDetailRepository;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -49,7 +48,21 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 
 	@Override
 	public PersonDetailDto updatePersonById(long id, PersonDetailDto personDetailDto) {
-		return null;
+		log.info("updatePersonById method called");
+		PersonDetail personDetail = personDetailRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
+		personDetail.setFirstName(personDetailDto.getFirstName());
+		personDetail.setLastName(personDetailDto.getLastName());
+		personDetail.setEmail(personDetailDto.getEmail());
+		personDetail.setPassword(personDetailDto.getPassword());
+		personDetail.setConfirmPassword(personDetailDto.getConfirmPassword());
+		personDetail.setAge(personDetailDto.getAge());
+		personDetail.setGender(personDetailDto.getGender());
+		personDetail.setMobile(personDetailDto.getMobile());
+		personDetail.setActive(personDetailDto.isActive());
+		personDetail.setDescription(personDetailDto.getDescription());
+		log.info("updatePersonById method completed");
+		return personDetailMapper.toDTO(personDetail);
 	}
 
 	@Override
