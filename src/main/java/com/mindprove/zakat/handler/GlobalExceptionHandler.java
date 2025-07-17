@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.mindprove.zakat.exceptions.APIHandlerException;
+import com.mindprove.zakat.exceptions.AlreadyExistException;
 import com.mindprove.zakat.exceptions.NotFoundException;
 import com.mindprove.zakat.response.ResponseDTO;
 
@@ -25,5 +26,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ResponseDTO> notFoundException(NotFoundException e){
 		log.info("NotFoundException method got called");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(e.getMessage(), null, HttpStatus.NOT_FOUND));
+	}
+	
+	@ExceptionHandler(AlreadyExistException.class)
+	public ResponseEntity<ResponseDTO> alreadyExistException(AlreadyExistException e){
+		log.info("AlreadyExistException method got called");
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDTO(e.getMessage(), null, HttpStatus.CONFLICT));
 	}
 }
