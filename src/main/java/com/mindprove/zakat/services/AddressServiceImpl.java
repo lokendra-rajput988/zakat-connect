@@ -23,13 +23,13 @@ public class AddressServiceImpl implements AddressService {
 	
 	@Override
 	public AddressDto createAddress(AddressDto addressDto) {
-	    log.info("createAddress method called ");
+	    log.info("create address method called ");
 		return addressMapper.toDTO(addressRepository.save(addressMapper.toEntity(addressDto)));
 	}
 
 	@Override
 	public AddressDto updateAddressById(long id, AddressDto addressDto) {
-		log.info("updateAddressById method called");
+		log.info("update address by id method called");
 		Address address = addressRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("address id " + id + " is not found", 404));
 		address.setStreet(addressDto.getStreet());
@@ -37,13 +37,14 @@ public class AddressServiceImpl implements AddressService {
 		address.setState(addressDto.getState());
 		address.setCountry(addressDto.getCountry());
 		address.setZipCode(addressDto.getZipCode());
-		//add person_details_id
+		Address address1=addressMapper.toEntity(addressDto);
+		address.setPersonDetail(address1.getPersonDetail());
 		return addressMapper.toDTO(addressRepository.save(address));
 	}
 
 	@Override
 	public AddressDto getAddressById(long id) {
-		log.info("getAddressById method called");
+		log.info("get address by id method called");
 		Address address = addressRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("address id " + id + " is not found", 404));
 		return addressMapper.toDTO(address);
@@ -51,17 +52,19 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public boolean deleteAddressById(long id) {
-		log.info("deleteAddressById method called");
+		log.info("delete address by id method called");
 		Address address = addressRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("address id " + id + " is not found", 404));
 		addressRepository.delete(address);
+		log.info("delete address by id method completed");
 		return true;
 	}
 
 	@Override
 	public List<AddressDto> getAllAddress() {
-		log.info("getAllAddress method called");
+		log.info("get all address method called");
 		List<AddressDto> addressDtos=addressRepository.findAll().stream().map(addressMapper::toDTO).toList();
+		log.info("get all address method completed");
 		return addressDtos;
 	}
 

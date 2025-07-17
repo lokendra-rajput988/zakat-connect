@@ -32,7 +32,7 @@ public class AddressController {
 		return ResponseEntity.ok().body(new ResponseDTO("Success", addressService.createAddress(addressDto), HttpStatus.CREATED));
 	}
 	
-	@PatchMapping("updateAddress/{id}")
+	@PatchMapping("updateAddressById/{id}")
 	public ResponseEntity<ResponseDTO> updateAddressById(@PathVariable long id,@RequestBody AddressDto addressDto){
 		log.info("Patch API method called");
 		return ResponseEntity.ok().body(new ResponseDTO("Success", addressService.updateAddressById(id, addressDto), HttpStatus.OK));

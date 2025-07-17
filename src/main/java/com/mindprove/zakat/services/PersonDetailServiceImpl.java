@@ -27,11 +27,11 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 
 	@Override
 	public PersonDetailDto createPerson(PersonDetailDto personDetailDto) {
-		log.info("createPerson method called");
+		log.info("create person method called");
 		PersonDetail personDetail = personDetailMapper.toEntity(personDetailDto);
 		Optional<PersonDetail> personDetailByEmail = personDetailRepository.findByEmail(personDetail.getEmail());
 		if (personDetailByEmail.isEmpty() && personDetail.getPassword().equals(personDetail.getConfirmPassword())) {
-			log.info("createPerson method completed");
+			log.info("create person method completed");
 			return personDetailMapper.toDTO(personDetailRepository.save(personDetail));
 		} else {
 			throw new AlreadyExistException("person email " + personDetail.getEmail() + " is already exist ", 409);
@@ -40,16 +40,16 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 
 	@Override
 	public PersonDetailDto getPersonById(long id) {
-		log.info("getPersonById method called");
+		log.info("get person by id method called");
 		PersonDetail personDetail = personDetailRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
-		log.info("getPersonById method completed");
+		log.info("get person by id method completed");
 		return personDetailMapper.toDTO(personDetail);
 	}
 
 	@Override
 	public PersonDetailDto updatePersonById(long id, PersonDetailDto personDetailDto) {
-		log.info("updatePersonById method called");
+		log.info("update person by id method called");
 		PersonDetail personDetail = personDetailRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
 		personDetail.setFirstName(personDetailDto.getFirstName());
@@ -62,26 +62,26 @@ public class PersonDetailServiceImpl implements PersonDetailService {
 		personDetail.setMobile(personDetailDto.getMobile());
 		personDetail.setActive(personDetailDto.isActive());
 		personDetail.setDescription(personDetailDto.getDescription());
-		log.info("updatePersonById method completed");
+		log.info("update person by id method completed");
 		return personDetailMapper.toDTO(personDetail);
 	}
 
 	@Override
 	public boolean deletePersonById(long id) {
-		log.info("deletePersonById method called");
+		log.info("delete person by id method called");
 		PersonDetail personDetail = personDetailRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
 		personDetailRepository.delete(personDetail);
-		log.info("deletePersonById method completed");
+		log.info("delete person by id method completed");
 		return true;
 	}
 
 	@Override
 	public List<PersonDetailDto> getAllPerson() {
-		log.info("getAllPerson method called");
+		log.info("get all person method called");
 		List<PersonDetailDto> personList = personDetailRepository.findAll().stream().map(personDetailMapper::toDTO)
 				.toList();
-		log.info("getAllPerson method completed");
+		log.info("get all person method completed");
 		return personList;
 	}
 
