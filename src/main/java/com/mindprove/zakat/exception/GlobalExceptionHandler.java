@@ -1,36 +1,26 @@
-package com.mindprove.zakat.handler;
+package com.mindprove.zakat.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.mindprove.zakat.exceptions.APIHandlerException;
-import com.mindprove.zakat.exceptions.AlreadyExistException;
-import com.mindprove.zakat.exceptions.NotFoundException;
-import com.mindprove.zakat.response.ResponseDTO;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+import com.mindprove.zakat.dto.ResponseDTO;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-	@ExceptionHandler(APIHandlerException.class)
-	public ResponseEntity<ResponseDTO> apiHandlerException(APIHandlerException e){
-		log.info("APIHandlerException method got called");
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDTO(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR));
-	}
 	
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<ResponseDTO> notFoundException(NotFoundException e){
-		log.info("NotFoundException method got called");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(e.getMessage(), null, HttpStatus.NOT_FOUND));
 	}
 	
 	@ExceptionHandler(AlreadyExistException.class)
 	public ResponseEntity<ResponseDTO> alreadyExistException(AlreadyExistException e){
-		log.info("AlreadyExistException method got called");
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDTO(e.getMessage(), null, HttpStatus.CONFLICT));
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ResponseDTO> exception(Exception e){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(e.getMessage(), null, HttpStatus.BAD_REQUEST));
 	}
 }

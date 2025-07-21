@@ -1,4 +1,4 @@
-package com.mindprove.zakat.response;
+package com.mindprove.zakat.dto;
 
 import java.time.LocalDateTime;
 

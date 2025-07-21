@@ -1,4 +1,4 @@
-package com.mindprove.zakat.exceptions;
+package com.mindprove.zakat.exception;
 
 public class AlreadyExistException extends RuntimeException {
 
