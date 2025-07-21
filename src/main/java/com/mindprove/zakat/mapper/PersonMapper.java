@@ -25,7 +25,6 @@ public class PersonMapper {
 	
 	public Person toEntity(PersonDto personDto) {
 		log.info("DTO to Entity mapper method got called ");
-		log.info("person dto : {}"+personDto);
 		Person person = new Person();
 		person.setFirstName(personDto.getFirstName());
 		person.setLastName(personDto.getLastName());
@@ -37,11 +36,13 @@ public class PersonMapper {
 		person.setActive(personDto.isActive());
 		person.setDescription(personDto.getDescription());
 		person.setAddress(personDto.getAddress());
+		
 		List<PersonRole> personRoles = new ArrayList<>();
 		for(long roleId : personDto.getRoleIds()) {
 			PersonRole personRole = new PersonRole();
 			Role role =roleRepository.findById(roleId).orElseThrow(() -> new NotFoundException("role id "+ roleId+" is not found", 404));
 			personRole.setRole(role);
+			personRoles.add(personRole);
 			personRoleRepository.save(personRole);
 		}
 		person.setPersonRoles(personRoles);
@@ -63,9 +64,9 @@ public class PersonMapper {
 		personDto.setDescription(person.getDescription());
 		personDto.setAddress(person.getAddress());
 		List<Long> roleIds = new ArrayList<>();
+		
 		for(PersonRole personRole : person.getPersonRoles()) {
 			long roleId =personRole.getRole().getId();
-			System.out.println("roleId : "+roleId);
 			roleIds.add(roleId);
 		}
 		personDto.setRoleIds(roleIds);

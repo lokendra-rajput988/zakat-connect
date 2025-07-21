@@ -37,7 +37,9 @@ public class PersonServiceImpl implements PersonService {
 			address.setPerson(save);
 			addressRepository.save(address);
 		}
+		System.out.println("jefudsbf");
 		for (PersonRole personRole : save.getPersonRoles()) {
+			System.out.println("personRole");
 			personRole.setPerson(save);
 			personRoleRepository.save(personRole);
 		}
