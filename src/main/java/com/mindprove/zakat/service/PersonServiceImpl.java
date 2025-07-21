@@ -1,8 +1,10 @@
 package com.mindprove.zakat.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import com.mindprove.zakat.dto.AddressDto;
 import com.mindprove.zakat.dto.PersonDto;
 import com.mindprove.zakat.entity.Address;
 import com.mindprove.zakat.entity.Person;
@@ -26,24 +28,25 @@ public class PersonServiceImpl implements PersonService {
 	private final PersonRepository perosnRepository;
 	private final AddressRepository addressRepository;
 	private final PersonRoleRepository personRoleRepository;
+	private final RoleRepository roleRepository;
 	private final PersonMapper personMapper;
 
 	@Override
 	public PersonDto createPerson(PersonDto personDto) {
 		log.info("create person method called");
 		Person person = personMapper.toEntity(personDto);
-		Person save = perosnRepository.save(person);
-		for (Address address : save.getAddress()) {
-			address.setPerson(save);
+		Person savedPerson = perosnRepository.save(person);
+		for (Address address : savedPerson.getAddress()) {
+			address.setPerson(savedPerson);
 			addressRepository.save(address);
 		}
-		for (PersonRole personRole : save.getPersonRoles()) {
-			personRole.setPerson(save);
+		for (PersonRole personRole : savedPerson.getPersonRoles()) {
+			personRole.setPerson(savedPerson);
 			personRoleRepository.save(personRole);
 		}
 
 		log.info("create person method completed");
-		return personMapper.toDTO(save);
+		return personMapper.toDTO(savedPerson);
 	}
 
 	@Override
@@ -60,20 +63,45 @@ public class PersonServiceImpl implements PersonService {
 		log.info("update person by id method called");
 		Person person = perosnRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException("person id " + id + " is not found", 404));
+		//update person
 		person.setFirstName(personDto.getFirstName());
 		person.setLastName(personDto.getLastName());
 		person.setEmail(personDto.getEmail());
 		person.setPassword(personDto.getPassword());
-		;
 		person.setAge(personDto.getAge());
 		person.setGender(personDto.getGender());
 		person.setMobile(personDto.getMobile());
 		person.setActive(personDto.isActive());
 		person.setDescription(personDto.getDescription());
 		// update address
-		Person savedPerson = perosnRepository.save(person);
+		List<Address> addressList= new ArrayList<Address>();
+		for(AddressDto addressDto : personDto.getAddress()) {
+			for(Address address : person.getAddress()) {
+			
+				address.setStreet(addressDto.getStreet());
+				address.setCity(addressDto.getCity());
+				address.setState(addressDto.getState());
+				address.setCountry(addressDto.getCountry());
+				address.setZipCode(addressDto.getZipCode());
+				address.setPerson(person);
+				addressList.add(address);
+			}
+		}
+		person.setAddress(addressList);
+		//update role
+		List<PersonRole> personRoles = new ArrayList<>();
+		for(long roleId : personDto.getRoleIds()) {
+			for(PersonRole personRole :person.getPersonRoles()) {
+				Role role =roleRepository.findById(roleId).orElseThrow(() -> new NotFoundException("role id "+ roleId+" is not found", 404));
+				personRole.setRole(role);
+				personRole.setPerson(person);
+				personRoles.add(personRole);	
+			}
+		}
+		person.setPersonRoles(personRoles);
+		Person updatedPerson = perosnRepository.save(person);
 		log.info("update person by id method completed");
-		return personMapper.toDTO(savedPerson);
+		return personMapper.toDTO(updatedPerson);
 	}
 
 	@Override

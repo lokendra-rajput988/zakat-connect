@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+
+import com.mindprove.zakat.dto.AddressDto;
 import com.mindprove.zakat.dto.PersonDto;
+import com.mindprove.zakat.entity.Address;
 import com.mindprove.zakat.entity.Person;
 import com.mindprove.zakat.entity.PersonRole;
 import com.mindprove.zakat.entity.Role;
@@ -35,8 +38,18 @@ public class PersonMapper {
 		person.setMobile(personDto.getMobile());
 		person.setActive(personDto.isActive());
 		person.setDescription(personDto.getDescription());
-		person.setAddress(personDto.getAddress());
+		List<Address> addressList= new ArrayList<Address>();
+		for(AddressDto addressDto : personDto.getAddress()) {
+		    Address address = new Address();
+			address.setStreet(addressDto.getStreet());
+			address.setCity(addressDto.getCity());
+			address.setState(addressDto.getState());
+			address.setCountry(addressDto.getCountry());
+			address.setZipCode(addressDto.getZipCode());
+			addressList.add(address);
 		
+		}	
+		person.setAddress(addressList);
 		List<PersonRole> personRoles = new ArrayList<>();
 		for(long roleId : personDto.getRoleIds()) {
 			PersonRole personRole = new PersonRole();
@@ -62,9 +75,19 @@ public class PersonMapper {
 		personDto.setAge(person.getAge());
 		personDto.setActive(person.isActive());
 		personDto.setDescription(person.getDescription());
-		personDto.setAddress(person.getAddress());
-		List<Long> roleIds = new ArrayList<>();
 		
+		List<AddressDto> addressDtos= new ArrayList<>();
+		for(Address address : person.getAddress()) {
+			AddressDto addressDto = new AddressDto();
+			addressDto.setStreet(address.getStreet());
+			addressDto.setCity(address.getCity());
+			addressDto.setState(address.getState());
+			addressDto.setCountry(address.getCountry());
+			addressDto.setZipCode(address.getZipCode());
+			addressDtos.add(addressDto);
+		}
+		personDto.setAddress(addressDtos);
+		List<Long> roleIds = new ArrayList<>();
 		for(PersonRole personRole : person.getPersonRoles()) {
 			long roleId =personRole.getRole().getId();
 			roleIds.add(roleId);

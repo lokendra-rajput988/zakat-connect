@@ -3,7 +3,6 @@ package com.mindprove.zakat.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mindprove.zakat.entity.Address;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +19,6 @@ public class PersonDto {
 	private String gender;
 	private String description;
 	private boolean isActive;
-	private List<Address> address = new ArrayList<>();
+	private List<AddressDto> address = new ArrayList<>();
 	private List<Long> roleIds=new ArrayList<>();
 }

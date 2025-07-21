@@ -20,7 +20,7 @@ import lombok.Data;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@Column
@@ -47,8 +47,8 @@ public class Person {
 	@Column
 	private String description;
 	
-	@Column(insertable = true)
-	private boolean isActive;
+	@Column
+	private boolean isActive=true;
 	
 	@CreationTimestamp
 	@Column(updatable = false)

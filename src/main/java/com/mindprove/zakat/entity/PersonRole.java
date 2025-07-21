@@ -21,7 +21,7 @@ import lombok.Data;
 public class PersonRole {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@CreationTimestamp
